@@ -217,13 +217,15 @@
 
   async function loadOrders() {
     const tbody = document.getElementById('orders-body');
-    tbody.innerHTML = '<tr><td colspan="9" class="loading">Loading...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="loading">Connecting to Supabase...</td></tr>';
     
-    // Show demo data first
     const demoOrders = getDemoOrders();
     
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/orders?select=*&order=created_at.desc&limit=100`, {
+      console.log('Fetching from:', SUPABASE_URL);
+      
+      // Try orders first
+      const ordersRes = await fetch(`${SUPABASE_URL}/rest/v1/orders?select=*&order=created_at.desc&limit=100`, {
         headers: { 
           'apikey': SUPABASE_ANON_KEY, 
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -231,30 +233,49 @@
         }
       });
       
-      if (response.ok) {
-        const realOrders = await response.json();
+      console.log('Orders response:', ordersRes.status);
+      
+      if (ordersRes.ok) {
+        const realOrders = await ordersRes.json();
+        console.log('Real orders:', realOrders);
+        
         if (realOrders && realOrders.length > 0) {
           allOrders = realOrders;
           renderOrders(allOrders);
           updateStats(allOrders.length);
-          updateAnalytics(allOrders.length, allOrders);
+          updateAnalytics(allOrders.length * 25, allOrders);
           return;
         }
       }
       
-      // Use demo data if no real orders
+      // Try analytics
+      const analyticsRes = await fetch(`${SUPABASE_URL}/rest/v1/analytics?select=*&order=created_at.desc&limit=500`, {
+        headers: { 
+          'apikey': SUPABASE_ANON_KEY, 
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      let analyticsCount = 0;
+      if (analyticsRes.ok) {
+        const analytics = await analyticsRes.json();
+        console.log('Analytics:', analytics);
+        analyticsCount = analytics?.length || 0;
+      }
+      
+      // Use demo if no real data
       allOrders = demoOrders;
       renderOrders(allOrders);
       updateStats(allOrders.length);
-      updateAnalytics(allOrders.length, allOrders);
+      updateAnalytics(analyticsCount > 0 ? analyticsCount : allOrders.length * 25, allOrders);
       
     } catch (error) {
-      console.log('Using demo data:', error);
-      // Use demo data on error
+      console.error('Error:', error);
       allOrders = demoOrders;
       renderOrders(allOrders);
       updateStats(allOrders.length);
-      updateAnalytics(allOrders.length, allOrders);
+      updateAnalytics(allOrders.length * 25, allOrders);
     }
   }
 
