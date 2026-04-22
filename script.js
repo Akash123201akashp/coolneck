@@ -139,8 +139,8 @@
       header.classList.toggle('scrolled', window.scrollY > 50);
     }, { passive: true });
 
-    const toggle = $('.header__menu-toggle');
-    const nav = $('.header__nav');
+    const toggle = $('#menu-toggle');
+    const nav = $('#main-nav');
     if (toggle && nav) {
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('active');
