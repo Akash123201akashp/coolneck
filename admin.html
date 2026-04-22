@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Cool Neck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --clr-primary: #F9A8C9;
+      --clr-accent: #FF6B9D;
+      --clr-dark: #1C1C2E;
+      --clr-dark-light: #2A2A42;
+      --clr-white: #FFFFFF;
+      --clr-gray-100: #F7F7F8;
+      --clr-gray-200: #E8E8EC;
+      --clr-gray-500: #6E6E80;
+      --clr-success: #22C55E;
+      --clr-error: #EF4444;
+      --ff-heading: 'Outfit', sans-serif;
+      --ff-body: 'Inter', sans-serif;
+    }
+    body { font-family: var(--ff-body); background: var(--clr-gray-100); color: var(--clr-dark); }
+    
+    /* Admin Header */
+    .admin-header { background: linear-gradient(135deg, var(--clr-dark), var(--clr-dark-light)); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .admin-header__title { font-family: var(--ff-heading); font-size: 24px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; }
+    .admin-header__title span { font-size: 28px; }
+    .admin-header__back { color: white; text-decoration: none; padding: 10px 20px; background: rgba(255,255,255,.1); border-radius: 8px; font-size: 14px; transition: background .2s; }
+    .admin-header__back:hover { background: rgba(255,255,255,.2); }
+    
+    /* Stats Cards */
+    .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 30px 40px; }
+    .stat-card { background: var(--clr-white); border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .stat-card__label { font-size: 13px; color: var(--clr-gray-500); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-card__value { font-family: var(--ff-heading); font-size: 32px; font-weight: 800; color: var(--clr-dark); }
+    .stat-card__change { font-size: 13px; margin-top: 8px; }
+    .stat-card__change--up { color: var(--clr-success); }
+    .stat-card__change--down { color: var(--clr-error); }
+    
+    /* Filter Bar */
+    .filter-bar { display: flex; gap: 16px; padding: 0 40px 20px; flex-wrap: wrap; align-items: center; }
+    .filter-bar__search { flex: 1; min-width: 250px; padding: 12px 16px; border: 2px solid var(--clr-gray-200); border-radius: 10px; font-size: 14px; }
+    .filter-bar__search:focus { outline: none; border-color: var(--clr-accent); }
+    .filter-bar__select { padding: 12px 16px; border: 2px solid var(--clr-gray-200); border-radius: 10px; font-size: 14px; background: white; cursor: pointer; }
+    .filter-bar__btn { padding: 12px 24px; background: var(--clr-accent); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: transform .2s; }
+    .filter-bar__btn:hover { transform: translateY(-2px); }
+    
+    /* Orders Table */
+    .orders-section { padding: 0 40px 40px; }
+    .orders-card { background: var(--clr-white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table th { background: var(--clr-gray-100); padding: 16px; text-align: left; font-family: var(--ff-heading); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--clr-gray-500); }
+    .orders-table td { padding: 16px; border-bottom: 1px solid var(--clr-gray-200); font-size: 14px; }
+    .orders-table tr:hover { background: #fafafa; }
+    .orders-table__id { font-family: monospace; font-weight: 600; color: var(--clr-accent); }
+    .orders-table__status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .orders-table__status--pending { background: #fef3c7; color: #d97706; }
+    .orders-table__status--confirmed { background: #dbeafe; color: #2563eb; }
+    .orders-table__status--shipped { background: #d1fae5; color: #059669; }
+    .orders-table__status--delivered { background: #dcfce7; color: #16a34a; }
+    .orders-table__payment { font-weight: 500; }
+    .orders-table__action { color: var(--clr-accent); cursor: pointer; font-weight: 500; }
+    
+    /* Empty State */
+    .empty-state { text-align: center; padding: 60px; color: var(--clr-gray-500); }
+    .empty-state__icon { font-size: 48px; margin-bottom: 16px; }
+    
+    /* Loading */
+    .loading { text-align: center; padding: 40px; color: var(--clr-gray-500); }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .admin-stats { grid-template-columns: 1fr; padding: 20px; }
+      .filter-bar { padding: 0 20px 20px; flex-direction: column; }
+      .orders-section { padding: 0 20px 40px; }
+      .orders-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Admin Header -->
+<header class="admin-header">
+  <div class="admin-header__title">
+    <span>⚙️</span> Admin Panel
+  </div>
+  <div>
+    <span style="color: rgba(255,255,255,0.7); margin-right: 20px;">Cool Neck Store</span>
+    <a href="index.html" class="admin-header__back">← Back to Store</a>
+  </div>
+</header>
+
+<!-- Stats Cards -->
+<div class="admin-stats">
+  <div class="stat-card">
+    <div class="stat-card__label">Total Orders</div>
+    <div class="stat-card__value" id="total-orders">--</div>
+    <div class="stat-card__change stat-card__change--up">↑ 12% from last week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">Total Revenue</div>
+    <div class="stat-card__value" id="total-revenue">₹--</div>
+    <div class="stat-card__change stat-card__change--up">↑ 8% from last week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">Pending Orders</div>
+    <div class="stat-card__value" id="pending-orders">--</div>
+    <div class="stat-card__change">Awaiting confirmation</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">COD Orders</div>
+    <div class="stat-card__value" id="cod-orders">--</div>
+    <div class="stat-card__change">Cash on Delivery</div>
+  </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <input type="text" class="filter-bar__search" id="search-input" placeholder="Search by order ID, name, phone...">
+  <select class="filter-bar__select" id="status-filter">
+    <option value="">All Status</option>
+    <option value="pending">Pending</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="shipped">Shipped</option>
+    <option value="delivered">Delivered</div>
+  </select>
+  <select class="filter-bar__select" id="payment-filter">
+    <option value="">All Payment</option>
+    <option value="upi">UPI</option>
+    <option value="cod">COD</option>
+  </select>
+  <button class="filter-bar__btn" onclick="loadOrders()">🔍 Search</button>
+  <button class="filter-bar__btn" onclick="exportOrders()" style="background: var(--clr-success);">📥 Export</button>
+</div>
+
+<!-- Orders Table -->
+<div class="orders-section">
+  <div class="orders-card">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Phone</th>
+          <th>Products</th>
+          <th>Amount</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="orders-body">
+        <tr><td colspan="9" class="loading">Loading orders...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://rubbrgrzvanrigatpmto.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1YmJyZ3J6dmFucmlnYXRwbXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NzUwMjAsImV4cCI6MjA4NTQ1MTAyMH0.yUs7UPqmnMY5m8XIXp8Kmvj8IawbfNyDH3TLI8JVENI';
+
+  let allOrders = [];
+
+  async function loadOrders() {
+    const tbody = document.getElementById('orders-body');
+    tbody.innerHTML = '<tr><td colspan="9" class="loading">Loading orders...</td></tr>';
+    
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/orders?select=*&order=created_at.desc`, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      allOrders = await response.json();
+      
+      if (!allOrders || allOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><div class="empty-state__icon">📦</div>No orders yet</td></tr>';
+        updateStats(0);
+        return;
+      }
+      
+      renderOrders(allOrders);
+      updateStats(allOrders.length);
+      
+    } catch (error) {
+      console.error('Error loading orders:', error);
+      tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><div class="empty-state__icon">⚠️</div>Error loading orders. Make sure Supabase is configured.</td></tr>';
+    }
+  }
+
+  function renderOrders(orders) {
+    const tbody = document.getElementById('orders-body');
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const statusFilter = document.getElementById('status-filter').value;
+    const paymentFilter = document.getElementById('payment-filter').value;
+    
+    let filtered = orders.filter(order => {
+      const matchSearch = !searchTerm || 
+        (order.order_id && order.order_id.toLowerCase().includes(searchTerm)) ||
+        (order.customer_name && order.customer_name.toLowerCase().includes(searchTerm)) ||
+        (order.customer_phone && order.customer_phone.includes(searchTerm));
+      
+      const matchStatus = !statusFilter || order.status === statusFilter;
+      const matchPayment = !paymentFilter || order.payment_method === paymentFilter;
+      
+      return matchSearch && matchStatus && matchPayment;
+    });
+    
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No orders match your filters</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = filtered.map(order => {
+      const date = new Date(order.created_at).toLocaleDateString('en-IN', { 
+        day: 'numeric', month: 'short', year: 'numeric' 
+      });
+      const statusClass = `orders-table__status--${order.status || 'pending'}`;
+      
+      return `
+        <tr>
+          <td class="orders-table__id">#${order.order_id?.slice(-8) || 'N/A'}</td>
+          <td>${order.customer_name || 'N/A'}</td>
+          <td>${order.customer_phone || 'N/A'}</td>
+          <td>${order.product_name || 'N/A'} (${order.quantity || 1})</td>
+          <td><strong>₹${(order.total_amount || 0).toLocaleString()}</strong></td>
+          <td class="orders-table__payment">${order.payment_method === 'cod' ? '💵 COD' : '📱 UPI'}</td>
+          <td><span class="orders-table__status ${statusClass}">${order.status || 'Pending'}</span></td>
+          <td>${date}</td>
+          <td class="orders-table__action" onclick="viewOrder('${order.order_id}')">View</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function updateStats(count) {
+    const totalRevenue = allOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+    const pending = allOrders.filter(o => !o.status || o.status === 'pending').length;
+    const cod = allOrders.filter(o => o.payment_method === 'cod').length;
+    
+    document.getElementById('total-orders').textContent = count;
+    document.getElementById('total-revenue').textContent = '₹' + totalRevenue.toLocaleString();
+    document.getElementById('pending-orders').textContent = pending;
+    document.getElementById('cod-orders').textContent = cod;
+  }
+
+  function viewOrder(orderId) {
+    alert('Order Details for: ' + orderId + '\n\nFull details would show in a modal.');
+  }
+
+  function exportOrders() {
+    if (!allOrders.length) return alert('No orders to export');
+    
+    let csv = 'Order ID,Name,Phone,Email,Address,Product,Qty,Amount,Payment,Status,Date\n';
+    allOrders.forEach(order => {
+      csv += `${order.order_id || ''},${order.customer_name || ''},${order.customer_phone || ''},${order.customer_email || ''},${(order.customer_address || '').replace(/,/g, ';')},${order.product_name || ''},${order.quantity || 1},${order.total_amount || 0},${order.payment_method || ''},${order.status || 'pending'},${order.created_at || ''}\n`;
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'orders-' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
+  }
+
+  // Auto-load on page load
+  window.addEventListener('DOMContentLoaded', loadOrders);
+</script>
+
+</body>
+</html>

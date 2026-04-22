@@ -1,8 +1,8 @@
 /**
- * COOL NECK — Main JavaScript
- * Cart, Checkout, UPI/COD Payment, Supabase Orders
+ * COOL NECK — Two Product Store JavaScript
+ * Multi-product Cart, Checkout, UPI/COD Payment
  */
-(function () {
+(function() {
   'use strict';
 
   /* ========== SUPABASE CONFIG ========== */
@@ -10,25 +10,47 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1YmJyZ3J6dmFucmlnYXRwbXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NzUwMjAsImV4cCI6MjA4NTQ1MTAyMH0.yUs7UPqmnMY5m8XIXp8Kmvj8IawbfNyDH3TLI8JVENI';
   const EDGE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/process-order';
 
-  /* ========== PRODUCT DATA ========== */
-  const PRODUCT = {
-    name: 'Cool Neck — Bladeless Neck Fan',
-    price: 849,
-    comparePrice: 1499,
-    image: 'assets/A_professional_product_202604171306.png',
-    images: [
-      'assets/A_professional_product_202604171306.png',
-      'assets/A_pastel_pink_202604141322.png',
-      'assets/Subject__A_professional_202604171320.png',
-      'assets/Professional_e-commerce_product_202604140917.png'
-    ]
+  /* ========== PRODUCTS DATA ========== */
+  const PRODUCTS = {
+    1: {
+      id: 1,
+      name: 'Cool Neck — Bladeless Neck Fan',
+      price: 649,
+      comparePrice: 1499,
+      image: 'assets/product 1/A_professional_product_202604171306.png',
+      images: [
+        'assets/product 1/A_professional_product_202604171306.png',
+        'assets/product 1/A_pastel_pink_202604141322.png',
+        'assets/product 1/Subject__A_professional_202604171320.png'
+      ]
+    },
+    2: {
+      id: 2,
+      name: 'Mini Air Cooler — Portable',
+      price: 1200,
+      comparePrice: 2499,
+      image: 'assets/product 2/Mini_air_cooler_202604202034.png',
+      images: [
+        'assets/product 2/Mini_air_cooler_202604202034.png',
+        'assets/product 2/A_small_air_202604202034.png',
+        'assets/product 2/product_photography_of_202604211543.png'
+      ]
+    }
+  };
+
+  /* ========== BUNDLE ========== */
+  const BUNDLE = {
+    name: 'Cool Neck + Mini Air Cooler Bundle',
+    price: 1549,
+    comparePrice: 1849,
+    image: 'assets/product 1/A_professional_product_202604171306.png'
   };
 
   /* ========== STATE ========== */
   let cart = [];
-  let quantity = 1;
+  let quantities = { 1: 1, 2: 1 };
   let selectedPayment = null;
-  let checkoutStep = 1; // 1 = info, 2 = payment, 3 = success
+  let checkoutStep = 1;
   let appliedCouponDiscount = 0;
   let appliedCouponCode = '';
 
@@ -37,7 +59,7 @@
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   const money = (n) => '₹' + n.toLocaleString('en-IN');
 
-  /* ========== SUPABASE CLIENT ========== */
+  /* ========== SUPABASE ========== */
   let supabase = null;
 
   async function initSupabase() {
@@ -52,10 +74,7 @@
         }
         resolve();
       };
-      script.onerror = () => { 
-        console.warn('⚠️ Supabase CDN failed'); 
-        resolve(); 
-      };
+      script.onerror = () => { console.warn('⚠️ Supabase CDN failed'); resolve(); };
       document.head.appendChild(script);
     });
   }
@@ -86,13 +105,14 @@
 
   /* ========== GALLERY ========== */
   function initGallery() {
-    const mainImg = $('#main-product-image');
-    const thumbs = $$('.product-gallery__thumb');
-    if (!mainImg || !thumbs.length) return;
-    thumbs.forEach(thumb => {
+    $$('.product-card__thumb').forEach(thumb => {
       thumb.addEventListener('click', () => {
-        mainImg.src = thumb.dataset.src;
-        thumbs.forEach(t => t.classList.remove('active'));
+        const productId = parseInt(thumb.dataset.product);
+        const src = thumb.dataset.src;
+        const mainImg = $(`#main-product-${productId}-image`);
+        if (mainImg) mainImg.src = src;
+
+        $$(`.product-card__thumb[data-product="${productId}"]`).forEach(t => t.classList.remove('active'));
         thumb.classList.add('active');
       });
     });
@@ -100,30 +120,44 @@
 
   /* ========== QUANTITY ========== */
   function initQuantity() {
-    const minus = $('#qty-minus');
-    const plus = $('#qty-plus');
-    const display = $('#qty-value');
-    if (!minus || !plus || !display) return;
-    minus.addEventListener('click', () => { if (quantity > 1) { quantity--; display.textContent = quantity; } });
-    plus.addEventListener('click', () => { if (quantity < 10) { quantity++; display.textContent = quantity; } });
+    $$('.product-card__qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productId = parseInt(btn.dataset.product);
+        const action = btn.dataset.action;
+        if (action === 'minus' && quantities[productId] > 1) quantities[productId]--;
+        if (action === 'plus' && quantities[productId] < 10) quantities[productId]++;
+        const display = $(`#qty-value-${productId}`);
+        if (display) display.textContent = quantities[productId];
+      });
+    });
   }
 
   /* ========== CART ========== */
-  function addToCart() {
-    const existing = cart.find(i => i.name === PRODUCT.name);
-    if (existing) {
-      existing.quantity += quantity;
+  function addToCart(productId, isBundle = false, bundleType = null) {
+    if (isBundle) {
+      const existing = cart.find(i => i.isBundle);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...BUNDLE, quantity: 1, isBundle: true });
+      }
+      showToast('Bundle added to cart! 🎉');
     } else {
-      cart.push({ ...PRODUCT, quantity });
+      const product = PRODUCTS[productId];
+      const existing = cart.find(i => i.id === productId && !i.isBundle);
+      if (existing) {
+        existing.quantity += quantities[productId];
+      } else {
+        cart.push({ ...product, quantity: quantities[productId] });
+      }
+      showToast(`${product.name} added to cart! 🎉`);
     }
     updateCartUI();
-    showToast('Added to cart! 🎉');
 
-    // Meta Pixel Tracking
     if (typeof fbq !== 'undefined') {
       fbq('track', 'AddToCart', {
-        content_name: PRODUCT.name,
-        value: PRODUCT.price * quantity,
+        content_name: isBundle ? BUNDLE.name : PRODUCTS[productId].name,
+        value: isBundle ? BUNDLE.price : PRODUCTS[productId].price * quantities[productId],
         currency: 'INR'
       });
     }
@@ -158,7 +192,6 @@
           <button class="cart-item__remove" data-action="remove" data-idx="${idx}">✕</button>
         </div>`).join('');
 
-      // Bind cart item buttons
       itemsEl.querySelectorAll('[data-action]').forEach(btn => {
         btn.addEventListener('click', () => {
           const idx = parseInt(btn.dataset.idx);
@@ -206,26 +239,32 @@
     closeBtn?.addEventListener('click', close);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-    // Expose globally
     window.CoolNeck = { openCart: open, closeCart: close };
   }
 
-  /* ========== ADD TO CART / BUY NOW BUTTONS ========== */
+  /* ========== PRODUCT ACTIONS ========== */
   function initProductActions() {
-    const addBtn = $('#add-to-cart-btn');
-    const buyBtn = $('#buy-now-btn');
-
-    addBtn?.addEventListener('click', () => {
-      addToCart();
+    $$('.product-card__add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productId = parseInt(btn.dataset.product);
+        addToCart(productId);
+      });
     });
 
-    buyBtn?.addEventListener('click', () => {
-      addToCart();
-      openCheckout();
+    $$('.product-card__buy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productId = parseInt(btn.dataset.product);
+        addToCart(productId);
+        openCheckout();
+      });
+    });
+
+    $('.bundle-offer__btn')?.addEventListener('click', function() {
+      addToCart(null, true, 'both');
     });
   }
 
-  /* ========== CHECKOUT MODAL ========== */
+  /* ========== CHECKOUT ========== */
   function openCheckout() {
     if (cart.length === 0) { showToast('Your cart is empty', 'error'); return; }
     window.CoolNeck?.closeCart();
@@ -254,65 +293,63 @@
     const step = $(`#checkout-step-${checkoutStep}`);
     step?.classList.add('active');
 
-    // Update order summary
     const summary = $('#order-summary');
     if (summary) {
       const baseTotal = getCartTotal();
-      const shipping = 0;
-      let finalTotal = baseTotal;
+      const shipping = baseTotal >= 499 ? 0 : 50;
+      let finalTotal = baseTotal + shipping;
       let extraDiscountHtml = '';
+      
       if (appliedCouponDiscount > 0) {
         const discountAmount = Math.floor(baseTotal * (appliedCouponDiscount / 100));
         finalTotal -= discountAmount;
-        extraDiscountHtml = `<div class="order-summary__row order-summary__row--discount" style="color:var(--clr-success, green)"><span>Coupon (${appliedCouponCode})</span><span>-${money(discountAmount)}</span></div>`;
+        extraDiscountHtml = `<div class="order-summary__row order-summary__row--discount" style="color:var(--clr-success)"><span>Coupon (${appliedCouponCode})</span><span>-${money(discountAmount)}</span></div>`;
       }
+
+      const itemsList = cart.map(item => `<div class="order-summary__row"><span>${item.name} × ${item.quantity}</span><span>${money(item.price * item.quantity)}</span></div>`).join('');
+
       summary.innerHTML = `
-        <div class="order-summary__row"><span>Cool Neck × ${getCartTotalQty()}</span><span>${money(baseTotal)}</span></div>
-        <div class="order-summary__row order-summary__row--discount"><span>Discount (MRP ₹1,499)</span><span>-${money((1499 - 849) * getCartTotalQty())}</span></div>
+        ${itemsList}
+        <div class="order-summary__row order-summary__row--discount"><span>Discount</span><span>-${money(baseTotal > 0 ? cart.reduce((s,i) => s + (i.comparePrice - i.price) * i.quantity, 0) : 0)}</span></div>
         ${extraDiscountHtml}
-        <div class="order-summary__row"><span>Shipping</span><span style="color:var(--clr-success)">FREE</span></div>
-        <div class="order-summary__row" style="font-weight:700"><span>Total</span><span>${money(finalTotal + shipping)}</span></div>`;
+        <div class="order-summary__row"><span>Shipping</span><span style="color:${shipping === 0 ? 'var(--clr-success)' : 'inherit'}">${shipping === 0 ? 'FREE' : money(shipping)}</span></div>
+        <div class="order-summary__row"><span>Total</span><span>${money(finalTotal)}</span></div>`;
     }
 
-    // Payment selection
     $$('.payment-card').forEach(card => {
       card.classList.toggle('selected', card.dataset.method === selectedPayment);
     });
   }
 
   function initCheckout() {
-    // Close
     $('#checkout-close')?.addEventListener('click', closeCheckout);
     $('#checkout-overlay')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeCheckout(); });
 
-    // Step 1 → Step 2
     $('#checkout-next')?.addEventListener('click', () => {
       if (!validateForm()) return;
       checkoutStep = 2;
       updateCheckoutUI();
-      // Update amounts on payment step
+      
       const baseTotal = getCartTotal();
-      let finalTotal = baseTotal;
-      if (appliedCouponDiscount > 0) {
-        finalTotal -= Math.floor(baseTotal * (appliedCouponDiscount / 100));
-      }
+      const shipping = baseTotal >= 499 ? 0 : 50;
+      let finalTotal = baseTotal + shipping;
+      if (appliedCouponDiscount > 0) finalTotal -= Math.floor(baseTotal * (appliedCouponDiscount / 100));
+      
       const upiAmt = $('#upi-amount');
       const codAmt = $('#cod-amount');
       if (upiAmt) upiAmt.textContent = money(finalTotal);
       if (codAmt) codAmt.textContent = money(finalTotal);
-      // Copy order summary to step 2
+      
       const s1 = $('#order-summary');
       const s2 = $('#order-summary-2');
       if (s1 && s2) s2.innerHTML = s1.innerHTML;
     });
 
-    // Back
     $('#checkout-back')?.addEventListener('click', () => {
       checkoutStep = 1;
       updateCheckoutUI();
     });
 
-    // Payment method selection
     $$('.payment-card').forEach(card => {
       card.addEventListener('click', () => {
         selectedPayment = card.dataset.method;
@@ -324,79 +361,54 @@
       });
     });
 
-    // Place Order
     $('#place-order-btn')?.addEventListener('click', placeOrder);
-
-    // Checkout from cart drawer
     $('#cart-checkout-btn')?.addEventListener('click', openCheckout);
 
-    // Coupon logic
     $('#apply-coupon-btn')?.addEventListener('click', () => {
       const input = $('#coupon-input');
       const msg = $('#coupon-message');
       if (!input || !msg) return;
       const code = input.value.trim().toUpperCase();
-      if (code === 'NEW19') {
-        appliedCouponDiscount = 19;
-        appliedCouponCode = code;
-        msg.textContent = 'Coupon applied! 19% discount.';
-        msg.style.color = 'var(--clr-success, green)';
-        updateCheckoutUI();
-        
-        // Trigger cool glow animation
-        const summary = $('#order-summary');
-        if(summary) {
-          summary.classList.remove('coupon-success-anim');
-          void summary.offsetWidth; // trigger reflow
-          summary.classList.add('coupon-success-anim');
-        }
-      } else if (code === 'COOL20') {
-        appliedCouponDiscount = 20;
-        appliedCouponCode = code;
-        msg.textContent = 'Coupon applied! 20% discount.';
-        msg.style.color = 'var(--clr-success, green)';
-        updateCheckoutUI();
-        
-        // Trigger cool glow animation
-        const summary = $('#order-summary');
-        if(summary) {
-          summary.classList.remove('coupon-success-anim');
-          void summary.offsetWidth; // trigger reflow
-          summary.classList.add('coupon-success-anim');
-        }
-      } else if (code === 'NEW25') {
+      
+      if (code === 'FIRST25') {
         appliedCouponDiscount = 25;
         appliedCouponCode = code;
         msg.textContent = 'Coupon applied! 25% discount.';
-        msg.style.color = 'var(--clr-success, green)';
+        msg.style.color = 'var(--clr-success)';
         updateCheckoutUI();
-        
-        // Trigger cool glow animation
         const summary = $('#order-summary');
         if(summary) {
           summary.classList.remove('coupon-success-anim');
-          void summary.offsetWidth; // trigger reflow
+          void summary.offsetWidth;
           summary.classList.add('coupon-success-anim');
         }
+      } else if (code === 'SAVE50') {
+        appliedCouponDiscount = 15;
+        appliedCouponCode = 'SAVE50';
+        msg.textContent = 'Coupon applied! ₹50 off.';
+        msg.style.color = 'var(--clr-success)';
+        updateCheckoutUI();
       } else if (code) {
         msg.textContent = 'Invalid coupon code.';
         msg.style.color = 'red';
         appliedCouponDiscount = 0;
         appliedCouponCode = '';
-        updateCheckoutUI();
       } else {
         msg.textContent = '';
         appliedCouponDiscount = 0;
         appliedCouponCode = '';
-        updateCheckoutUI();
       }
+      updateCheckoutUI();
     });
 
-    // Close success
     $('#success-close-btn')?.addEventListener('click', () => {
       closeCheckout();
       cart = [];
-      quantity = 1;
+      quantities = { 1: 1, 2: 1 };
+      $$('.product-card__qty-value').forEach(el => {
+        const id = el.id.replace('qty-value-', '');
+        el.textContent = quantities[id];
+      });
       updateCartUI();
     });
   }
@@ -412,21 +424,18 @@
       else { input.classList.remove('error'); }
     });
 
-    // Phone validation
     const phone = $('#customer-phone');
     if (phone && phone.value.trim() && !/^[6-9]\d{9}$/.test(phone.value.trim())) {
       phone.classList.add('error');
       valid = false;
     }
 
-    // Email validation
     const email = $('#customer-email');
     if (email && email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
       email.classList.add('error');
       valid = false;
     }
 
-    // Pincode validation
     const pincode = $('#customer-pincode');
     if (pincode && pincode.value.trim() && !/^\d{6}$/.test(pincode.value.trim())) {
       pincode.classList.add('error');
@@ -446,10 +455,9 @@
     btn.disabled = true;
 
     const baseTotal = getCartTotal();
-    let finalTotal = baseTotal;
-    if (appliedCouponDiscount > 0) {
-      finalTotal -= Math.floor(baseTotal * (appliedCouponDiscount / 100));
-    }
+    const shipping = baseTotal >= 499 ? 0 : 50;
+    let finalTotal = baseTotal + shipping;
+    if (appliedCouponDiscount > 0) finalTotal -= Math.floor(baseTotal * (appliedCouponDiscount / 100));
 
     const orderData = {
       customer_name: $('#customer-name').value.trim(),
@@ -460,13 +468,12 @@
       customer_city: $('#customer-city')?.value.trim() || '',
       payment_method: selectedPayment,
       quantity: getCartTotalQty(),
-      unit_price: PRODUCT.price,
+      unit_price: Math.floor(finalTotal / getCartTotalQty()),
       total_amount: finalTotal,
-      product_name: PRODUCT.name
+      product_name: cart.length > 1 ? 'Multiple Products' : cart[0]?.name || 'Order'
     };
 
     try {
-      // Send order to Edge Function (handles DB + email + verification)
       const response = await fetch(EDGE_FUNCTION_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -481,17 +488,15 @@
 
       console.log('✅ Order placed:', result);
 
-      // Meta Pixel Purchase Tracking
       if (typeof fbq !== 'undefined') {
         fbq('track', 'Purchase', {
-          value: getCartTotal(),
+          value: finalTotal,
           currency: 'INR',
-          content_name: PRODUCT.name,
+          content_name: orderData.product_name,
           num_items: getCartTotalQty()
         });
       }
 
-      // Show success
       checkoutStep = 3;
       updateCheckoutUI();
       const orderIdEl = $('#success-order-id');
@@ -500,8 +505,8 @@
       const paymentNote = $('#success-payment-note');
       if (paymentNote) {
         paymentNote.innerHTML = selectedPayment === 'upi'
-          ? '📧 A verification email has been sent to <strong>' + orderData.customer_email + '</strong>. Please complete the UPI payment and click the verify link in the email to confirm your order.'
-          : '✅ Your Cash on Delivery order is confirmed! Pay ₹' + getCartTotal().toLocaleString('en-IN') + ' at delivery. Confirmation email sent to <strong>' + orderData.customer_email + '</strong>.';
+          ? '📧 A verification email sent to <strong>' + orderData.customer_email + '</strong>. Please complete UPI payment.'
+          : '✅ Your Cash on Delivery order is confirmed! Pay ₹' + finalTotal.toLocaleString('en-IN') + ' at delivery.';
       }
 
       showToast('Order placed successfully! 🎉');
@@ -517,11 +522,11 @@
 
   /* ========== FAQ ========== */
   function initFAQ() {
-    $$('.faq__item').forEach(item => {
-      const q = item.querySelector('.faq__question');
+    $$('.faq-item').forEach(item => {
+      const q = item.querySelector('.faq-question');
       q?.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
-        $$('.faq__item').forEach(i => i.classList.remove('active'));
+        $$('.faq-item').forEach(i => i.classList.remove('active'));
         if (!isActive) item.classList.add('active');
       });
     });
@@ -561,6 +566,139 @@
     setTimeout(() => toast.classList.remove('active'), 3000);
   }
 
+  /* ========== FAKE PURCHASE NOTIFICATIONS ========== */
+  const fakePurchases = [
+    { name: 'Priya from Mumbai', product: 'Cool Neck', qty: 1 },
+    { name: 'Amit from Delhi', product: 'Mini Air Cooler', qty: 2 },
+    { name: 'Sneha from Bangalore', product: 'Cool Neck Bundle', qty: 1 },
+    { name: 'Rahul from Hyderabad', product: 'Cool Neck', qty: 1 },
+    { name: 'Anjali from Chennai', product: 'Mini Air Cooler', qty: 1 },
+    { name: 'Vikram from Pune', product: 'Cool Neck', qty: 2 },
+    { name: 'Meera from Kolkata', product: 'Cool Neck Bundle', qty: 1 },
+    { name: 'Arjun from Gurgaon', product: 'Mini Air Cooler', qty: 1 },
+    { name: 'Divya from Mumbai', product: 'Cool Neck', qty: 1 },
+    { name: 'Karthik from Chennai', product: 'Cool Neck', qty: 2 },
+    { name: 'Neha from Bangalore', product: 'Mini Air Cooler', qty: 1 },
+    { name: 'Raj from Delhi', product: 'Cool Neck Bundle', qty: 1 },
+    { name: 'Sonia from Pune', product: 'Cool Neck', qty: 1 },
+    { name: ' Aman from Noida', product: 'Mini Air Cooler', qty: 1 },
+    { name: 'Pooja from Mumbai', product: 'Cool Neck', qty: 2 }
+  ];
+
+  const customerAvatars = ['P', 'A', 'S', 'R', 'M', 'K', 'D', 'V', 'N', 'R', 'P', 'A', 'S', 'A', 'P'];
+  let purchaseIndex = 0;
+  let purchaseTimer = null;
+
+  function showPurchaseNotification() {
+    const popup = $('#purchase-popup');
+    const textEl = $('#purchase-popup-text');
+    const closeBtn = $('#purchase-popup-close');
+    if (!popup || !textEl) return;
+
+    const purchase = fakePurchases[purchaseIndex % fakePurchases.length];
+    const avatar = customerAvatars[purchaseIndex % customerAvatars.length];
+    
+    const iconEl = popup.querySelector('.purchase-popup__icon');
+    if (iconEl) iconEl.textContent = avatar;
+
+    textEl.innerHTML = `<strong>${purchase.name}</strong> just bought ${purchase.qty}x ${purchase.product}`;
+    
+    popup.classList.add('active');
+    
+    closeBtn?.addEventListener('click', () => {
+      popup.classList.remove('active');
+    });
+
+    setTimeout(() => {
+      popup.classList.remove('active');
+    }, 5000);
+
+    purchaseIndex++;
+  }
+
+  function startPurchaseNotifications() {
+    showPurchaseNotification();
+    
+    const delay = Math.random() * 8000 + 5000;
+    purchaseTimer = setInterval(() => {
+      showPurchaseNotification();
+    }, delay);
+  }
+
+  function stopPurchaseNotifications() {
+    if (purchaseTimer) {
+      clearInterval(purchaseTimer);
+      purchaseTimer = null;
+    }
+  }
+
+  /* ========== COUNTDOWN TIMER ========== */
+  function initCountdownTimer() {
+    let totalSeconds = 4 * 60 * 60 + 32 * 60 + 18;
+    
+    const updateTimer = () => {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      
+      const h1 = document.getElementById('hours');
+      const h2 = document.getElementById('hours-2');
+      const m1 = document.getElementById('minutes');
+      const m2 = document.getElementById('minutes-2');
+      const s1 = document.getElementById('seconds');
+      const s2 = document.getElementById('seconds-2');
+      
+      if (h1) h1.textContent = hours.toString().padStart(2, '0');
+      if (h2) h2.textContent = hours.toString().padStart(2, '0');
+      if (m1) m1.textContent = minutes.toString().padStart(2, '0');
+      if (m2) m2.textContent = minutes.toString().padStart(2, '0');
+      if (s1) s1.textContent = seconds.toString().padStart(2, '0');
+      if (s2) s2.textContent = seconds.toString().padStart(2, '0');
+      
+      if (totalSeconds > 0) totalSeconds--;
+    };
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  /* ========== LIVE VISITORS & DELIVERY DATE ========== */
+  function initLiveVisitors() {
+    const visitorsEl = document.getElementById('live-visitors');
+    const stockEl = document.getElementById('stock-left');
+    const stockCount = document.getElementById('stock-count');
+    const stockCount2 = document.getElementById('stock-count-2');
+    const deliveryEl = document.getElementById('delivery-date');
+    
+    if (visitorsEl) {
+      let visitors = 27;
+      setInterval(() => {
+        visitors = Math.floor(Math.random() * 15) + 20;
+        visitorsEl.textContent = visitors;
+      }, 8000);
+    }
+    
+    if (stockEl && stockCount && stockCount2) {
+      let stock = parseInt(stockCount.textContent);
+      setInterval(() => {
+        if (Math.random() > 0.7 && stock > 3) {
+          stock--;
+          stockEl.textContent = stock;
+          stockCount.textContent = stock;
+          stockCount2.textContent = stock - 2;
+        }
+      }, 25000);
+    }
+    
+    if (deliveryEl) {
+      const today = new Date();
+      const delivery = new Date(today);
+      delivery.setDate(delivery.getDate() + 3);
+      const options = { weekday: 'short', month: 'short', day: 'numeric' };
+      deliveryEl.textContent = delivery.toLocaleDateString('en-IN', options);
+    }
+  }
+
   /* ========== INIT ========== */
   async function init() {
     await initSupabase();
@@ -573,7 +711,10 @@
     initFAQ();
     initScrollReveal();
     initSmoothScroll();
+    initCountdownTimer();
+    initLiveVisitors();
     updateCartUI();
+    startPurchaseNotifications();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

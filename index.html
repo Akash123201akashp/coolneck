@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cool Neck — Wearable Bladeless Neck Fan | Stay Cool Anywhere</title>
-  <meta name="description" content="Cool Neck — The bladeless wearable neck fan with 360° airflow, 8-hour battery, whisper-quiet motor. Only ₹849. Free shipping across India.">
-  <meta name="keywords" content="neck fan, wearable fan, bladeless fan, portable fan, Cool Neck, summer gadget">
-  <meta property="og:title" content="Cool Neck — Wearable Bladeless Neck Fan">
-  <meta property="og:description" content="360° instant cooling. 8-hour battery. Only ₹849. Free shipping in India.">
-  <meta property="og:image" content="assets/Prompt__The_pink_202604171343.png">
-  <meta property="og:type" content="product">
-  <link rel="icon" type="image/png" href="assets/ChatGPT Image Apr 17, 2026, 12_56_48 PM.png">
+  <title>Shop Premium — Cool Neck & Mini Air Cooler</title>
+  <meta name="description" content="Shop premium products: Cool Neck wearable fan (₹649) and Mini Air Cooler (₹1200). Free shipping across India.">
+  <meta name="keywords" content="neck fan, air cooler, portable fan, mini cooler, summer gadget, cooling device">
+  <meta property="og:title" content="Shop Premium Products">
+  <meta property="og:description" content="Cool Neck ₹649 | Mini Air Cooler ₹1200">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/product 1/ChatGPT Image Apr 17, 2026, 12_56_48 PM.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -36,19 +35,19 @@
 </head>
 <body>
 
-<!-- ========== ANNOUNCEMENT BAR ========== -->
+<!-- Announcement Bar -->
 <div class="announcement-bar" id="announcement-bar">
   <div class="announcement-slider-container">
     <div class="announcement-slider-track">
-      <div class="announcement-slide">🔥 Summer Sale — Flat <span class="announcement-bar__highlight">43% OFF</span> — Limited Stock! 🔥</div>
-      <div class="announcement-slide">🚚 COD is Available</div>
-      <div class="announcement-slide">🎉 25% off for first 100 customers! Use code <strong class="announcement-bar__highlight">NEW25</strong></div>
-      <div class="announcement-slide">🔥 Summer Sale — Flat <span class="announcement-bar__highlight">43% OFF</span> — Limited Stock! 🔥</div>
+      <div class="announcement-slide">🔥 Flash Sale — Upto <span class="announcement-bar__highlight">50% OFF</span> — Limited Time! 🔥</div>
+      <div class="announcement-slide">🚚 Free Shipping on Orders Above ₹499</div>
+      <div class="announcement-slide">🎉 Extra 25% off for first 100 customers! Use code <strong class="announcement-bar__highlight">FIRST25</strong></div>
+      <div class="announcement-slide">🔥 Flash Sale — Upto <span class="announcement-bar__highlight">50% OFF</span> — Limited Time! 🔥</div>
     </div>
   </div>
 </div>
 
-<!-- ========== HEADER ========== -->
+<!-- Header -->
 <header class="header" id="site-header">
   <div class="header__inner">
     <a href="#" class="header__logo">
@@ -56,14 +55,14 @@
       Cool Neck
     </a>
     <nav class="header__nav" id="main-nav">
-      <a href="#hero" class="header__nav-link">Home</a>
-      <a href="#product" class="header__nav-link">Product</a>
-      <a href="#features" class="header__nav-link">Features</a>
-      <a href="#lifestyle" class="header__nav-link">Gallery</a>
+      <a href="#products" class="header__nav-link">Products</a>
+      <a href="#cool-neck" class="header__nav-link">Cool Neck</a>
+      <a href="#air-cooler" class="header__nav-link">Air Cooler</a>
       <a href="#reviews" class="header__nav-link">Reviews</a>
       <a href="#faq" class="header__nav-link">FAQ</a>
     </nav>
     <div class="header__actions">
+      <a href="admin.html" class="header__admin-link" aria-label="Admin Panel">⚙️</a>
       <button class="header__cart-btn" id="cart-toggle" aria-label="Open cart">
         🛒
         <span class="header__cart-count" id="cart-count">0</span>
@@ -75,7 +74,27 @@
   </div>
 </header>
 
-<!-- ========== HERO ========== -->
+<!-- Trust Badges -->
+<div class="trust-badges">
+  <div class="trust-badges__inner">
+    <div class="trust-badge"><span class="trust-badge__icon">🛡️</span><div class="trust-badge__text"><strong>Secure Payment</strong><span>100% Protected</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">↩️</span><div class="trust-badge__text"><strong>7-Day Returns</strong><span>Hassle Free</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">🎯</span><div class="trust-badge__text"><strong>1-Year Warranty</strong><span>Official Coverage</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">🚚</span><div class="trust-badge__text"><strong>Free Shipping</strong><span>On ₹499+</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">💬</span><div class="trust-badge__text"><strong>WhatsApp Support</strong><span>Quick Help</span></div></div>
+  </div>
+</div>
+
+<!-- Urgency Bar -->
+<div class="urgency-bar">
+  <div class="urgency-bar__inner">
+    <div class="urgency-bar__visitors"><span class="urgency-bar__dot"></span><span id="live-visitors">27</span> people viewing</div>
+    <div class="urgency-bar__stock"><span class="urgency-bar__stock-icon">🔥</span>Only <strong id="stock-left">7</strong> left in stock!</div>
+    <div class="urgency-bar__delivery">Free delivery by <strong id="delivery-date"></strong></div>
+  </div>
+</div>
+
+<!-- Hero Section -->
 <section class="hero section-padding" id="hero">
   <div class="container">
     <div class="hero__inner">
@@ -86,19 +105,14 @@
         </div>
         <h1 class="hero__title">
           Stay Cool.<br>
-          Stay <span class="hero__title-highlight">Unstoppable.</span>
+          Stay <span class="hero__title-highlight">Comfortable.</span>
         </h1>
         <p class="hero__subtitle">
-          The wearable bladeless neck fan that delivers 360° instant cooling — at the gym, at work, or on the go. No noise. No wires. Just breeze.
+          Discover our premium cooling collection. Wearable bladeless neck fan and portable air cooler — engineered for your comfort. No noise. No hassle. Just pure relief.
         </p>
-        <div class="hero__price">
-          <span class="hero__price-current">₹849</span>
-          <span class="hero__price-original">₹1,499</span>
-          <span class="hero__price-badge">43% OFF</span>
-        </div>
         <div class="hero__cta-group">
-          <a href="#product" class="btn btn--primary btn--large">🛒 Shop Now</a>
-          <a href="#features" class="btn btn--secondary btn--large">Learn More →</a>
+          <a href="#products" class="btn btn--primary btn--large">🛒 Shop Now</a>
+          <a href="#cool-neck" class="btn btn--secondary btn--large">Explore →</a>
         </div>
         <div class="hero__trust">
           <div class="hero__trust-item"><span>✓</span> Free Shipping</div>
@@ -106,197 +120,329 @@
           <div class="hero__trust-item"><span>✓</span> 1-Year Warranty</div>
         </div>
       </div>
-      <div class="hero__image-wrapper">
-        <img class="hero__image" src="assets/Prompt__The_pink_202604171343.png" alt="Cool Neck wearable neck fan floating with colorful shapes" loading="eager" width="560" height="560">
-        <div class="hero__float-badge hero__float-badge--top">
-          <div class="hero__float-badge-icon">🌀</div>
-          <div class="hero__float-badge-text"><strong>Bladeless</strong><span>Safe & quiet</span></div>
+      <div class="hero__products-scroll">
+        <div class="hero__product-card">
+          <img src="assets/product 1/Prompt__The_pink_202604171343.png" alt="Cool Neck" loading="eager">
+          <div class="hero__product-card-label">Cool Neck Fan</div>
         </div>
-        <div class="hero__float-badge hero__float-badge--bottom">
-          <div class="hero__float-badge-icon">🔋</div>
-          <div class="hero__float-badge-text"><strong>8 Hours</strong><span>Battery life</span></div>
+        <div class="hero__product-card">
+          <img src="assets/product 2/Mini_air_cooler_202604202034.png" alt="Mini Air Cooler" loading="eager">
+          <div class="hero__product-card-label">Mini Air Cooler</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== PRODUCT SHOWCASE ========== -->
-<section class="product-gallery section-padding" id="product">
+<!-- Products Section -->
+<section class="products-section section-padding" id="products">
   <div class="container">
-    <div class="product-gallery__grid">
-      <!-- Gallery -->
-      <div class="product-gallery__images reveal">
-        <div class="product-gallery__main-image">
-          <img id="main-product-image" src="assets/A_professional_product_202604171306.png" alt="Cool Neck product" loading="lazy">
-        </div>
-        <div class="product-gallery__thumbs">
-          <button class="product-gallery__thumb active" data-src="assets/A_professional_product_202604171306.png">
-            <img src="assets/A_professional_product_202604171306.png" alt="Thumb 1" loading="lazy">
-          </button>
-          <button class="product-gallery__thumb" data-src="assets/A_pastel_pink_202604141322.png">
-            <img src="assets/A_pastel_pink_202604141322.png" alt="Thumb 2" loading="lazy">
-          </button>
-          <button class="product-gallery__thumb" data-src="assets/Subject__A_professional_202604171320.png">
-            <img src="assets/Subject__A_professional_202604171320.png" alt="Thumb 3" loading="lazy">
-          </button>
-          <button class="product-gallery__thumb" data-src="assets/Professional_e-commerce_product_202604140917.png">
-            <img src="assets/Professional_e-commerce_product_202604140917.png" alt="Thumb 4" loading="lazy">
-          </button>
-        </div>
-      </div>
+    <div class="section-header text-center">
+      <span class="section-label reveal">Our Collection</span>
+      <h2 class="section-title reveal reveal-delay-1">Premium Products</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Handpicked for your summer comfort</p>
+    </div>
 
-      <!-- Product Info -->
-      <div class="product-info reveal reveal-delay-2">
-        <h2 class="product-info__title">Cool Neck — Bladeless Neck Fan</h2>
-        <div class="product-info__rating">
-          <div class="product-info__stars">★★★★★</div>
-          <span class="product-info__rating-text">4.8 / 5 · 2,340 reviews</span>
-        </div>
-        <div class="product-info__price-block">
-          <span class="product-info__price">₹849</span>
-          <span class="product-info__compare-price">₹1,499</span>
-          <span class="product-info__discount">43% OFF</span>
-        </div>
-        <p class="product-info__description">
-          Experience 360° bladeless cooling with Cool Neck. Ultra-lightweight (only 280g), whisper-quiet motor, and up to 8 hours of continuous airflow. Perfect for gym workouts, commutes, outdoor events, and WFH sessions.
-        </p>
-        <div class="product-info__quantity">
-          <span class="product-info__qty-label">Quantity</span>
-          <div class="product-info__qty-controls">
-            <button class="product-info__qty-btn" id="qty-minus">−</button>
-            <span class="product-info__qty-value" id="qty-value">1</span>
-            <button class="product-info__qty-btn" id="qty-plus">+</button>
+    <!-- Product 1: Cool Neck -->
+    <div class="product-card-wrapper reveal" id="cool-neck">
+      <div class="product-card">
+        <div class="product-card__badge product-card__badge--sale">SALE</div>
+        <div class="product-card__gallery">
+          <div class="product-card__main-image">
+            <img id="main-product-1-image" src="assets/product 1/A_professional_product_202604171306.png" alt="Cool Neck" loading="lazy">
+          </div>
+          <div class="product-card__thumbs">
+            <button class="product-card__thumb active" data-product="1" data-src="assets/product 1/A_professional_product_202604171306.png">
+              <img src="assets/product 1/A_professional_product_202604171306.png" alt="Thumb">
+            </button>
+            <button class="product-card__thumb" data-product="1" data-src="assets/product 1/A_pastel_pink_202604141322.png">
+              <img src="assets/product 1/A_pastel_pink_202604141322.png" alt="Thumb">
+            </button>
+            <button class="product-card__thumb" data-product="1" data-src="assets/product 1/Subject__A_professional_202604171320.png">
+              <img src="assets/product 1/Subject__A_professional_202604171320.png" alt="Thumb">
+            </button>
           </div>
         </div>
-        <button class="btn btn--primary product-info__add-to-cart" id="add-to-cart-btn">🛒 Add to Cart — ₹849</button>
-        <button class="btn btn--secondary product-info__buy-now" id="buy-now-btn">⚡ Buy It Now</button>
-        <div class="product-info__trust-badges">
-          <div class="product-info__trust-badge"><span class="product-info__trust-badge-icon">🚚</span><span class="product-info__trust-badge-text">Free Shipping</span></div>
-          <div class="product-info__trust-badge"><span class="product-info__trust-badge-icon">🔄</span><span class="product-info__trust-badge-text">7-Day Returns</span></div>
-          <div class="product-info__trust-badge"><span class="product-info__trust-badge-icon">🛡️</span><span class="product-info__trust-badge-text">1-Year Warranty</span></div>
+        <div class="product-card__info">
+          <div class="product-card__category">Wearable Accessories</div>
+          <h3 class="product-card__title">Cool Neck — Bladeless Neck Fan</h3>
+          <div class="product-card__rating">
+            <div class="product-card__stars">★★★★★</div>
+            <span>4.8 / 5 · 2,340 reviews</span>
+          </div>
+          <p class="product-card__description">
+            Experience 360° bladeless cooling with this ultra-lightweight neck fan. Perfect for gym, work, or outdoor activities. Whisper-quiet motor with 8-hour battery life.
+          </p>
+          <div class="product-card__features">
+            <span>🌀 Bladeless Design</span>
+            <span>🔋 8-Hour Battery</span>
+            <span>🤫 Whisper Quiet</span>
+          </div>
+          <div class="product-card__price-block">
+            <span class="product-card__price">₹649</span>
+            <span class="product-card__original-price">₹1,499</span>
+            <span class="product-card__discount">57% OFF</span>
+          </div>
+          <div class="countdown-timer">
+            <div class="countdown-timer__label">⏰ Sale ends in:</div>
+            <div class="countdown-timer__units">
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="hours">04</span><span class="countdown-timer__name">Hours</span></div>
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="minutes">32</span><span class="countdown-timer__name">Mins</span></div>
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="seconds">18</span><span class="countdown-timer__name">Secs</span></div>
+            </div>
+          </div>
+          <div class="low-stock-warning">
+            <span class="low-stock-warning__icon">⚠️</span>
+            <span class="low-stock-warning__text">Hurry! Only</span>
+            <span class="low-stock-warning__count" id="stock-count">7</span>
+            <span class="low-stock-warning__text">left!</span>
+          </div>
+          <div class="product-card__quantity">
+            <span>Quantity</span>
+            <div class="product-card__qty-controls">
+              <button class="product-card__qty-btn" data-action="minus" data-product="1">−</button>
+              <span class="product-card__qty-value" id="qty-value-1">1</span>
+              <button class="product-card__qty-btn" data-action="plus" data-product="1">+</button>
+            </div>
+          </div>
+          <button class="btn btn--primary product-card__add-btn" data-product="1">🛒 Add to Cart — ₹649</button>
+          <button class="btn btn--secondary product-card__buy-btn" data-product="1">⚡ Buy It Now</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Product 2: Mini Air Cooler -->
+    <div class="product-card-wrapper reveal" id="air-cooler">
+      <div class="product-card product-card--reverse">
+        <div class="product-card__badge product-card__badge--hot">BEST SELLER</div>
+        <div class="product-card__gallery">
+          <div class="product-card__main-image">
+            <img id="main-product-2-image" src="assets/product 2/Mini_air_cooler_202604202034.png" alt="Mini Air Cooler" loading="lazy">
+          </div>
+          <div class="product-card__thumbs">
+            <button class="product-card__thumb active" data-product="2" data-src="assets/product 2/Mini_air_cooler_202604202034.png">
+              <img src="assets/product 2/Mini_air_cooler_202604202034.png" alt="Thumb">
+            </button>
+            <button class="product-card__thumb" data-product="2" data-src="assets/product 2/A_small_air_202604202034.png">
+              <img src="assets/product 2/A_small_air_202604202034.png" alt="Thumb">
+            </button>
+            <button class="product-card__thumb" data-product="2" data-src="assets/product 2/product_photography_of_202604211543.png">
+              <img src="assets/product 2/product_photography_of_202604211543.png" alt="Thumb">
+            </button>
+          </div>
+        </div>
+        <div class="product-card__info">
+          <div class="product-card__category">Home & Office</div>
+          <h3 class="product-card__title">Mini Air Cooler — Portable</h3>
+          <div class="product-card__rating">
+            <div class="product-card__stars">★★★★★</div>
+            <span>4.9 / 5 · 1,850 reviews</span>
+          </div>
+          <p class="product-card__description">
+            Compact and portable air cooler for your desk or bedside. 3-speed fan with misting function. Perfect for small rooms, offices, and personal spaces.
+          </p>
+          <div class="product-card__features">
+            <span>💨 3 Speed Modes</span>
+            <span>💧 Misting Function</span>
+            <span>🔌 USB Powered</span>
+          </div>
+          <div class="product-card__price-block">
+            <span class="product-card__price">₹1,200</span>
+            <span class="product-card__original-price">₹2,499</span>
+            <span class="product-card__discount">52% OFF</span>
+          </div>
+          <div class="countdown-timer">
+            <div class="countdown-timer__label">⏰ Sale ends in:</div>
+            <div class="countdown-timer__units">
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="hours-2">04</span><span class="countdown-timer__name">Hours</span></div>
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="minutes-2">32</span><span class="countdown-timer__name">Mins</span></div>
+              <div class="countdown-timer__unit"><span class="countdown-timer__value" id="seconds-2">18</span><span class="countdown-timer__name">Secs</span></div>
+            </div>
+          </div>
+          <div class="low-stock-warning">
+            <span class="low-stock-warning__icon">⚠️</span>
+            <span class="low-stock-warning__text">Hurry! Only</span>
+            <span class="low-stock-warning__count" id="stock-count-2">5</span>
+            <span class="low-stock-warning__text">left!</span>
+          </div>
+          <div class="product-card__quantity">
+            <span>Quantity</span>
+            <div class="product-card__qty-controls">
+              <button class="product-card__qty-btn" data-action="minus" data-product="2">−</button>
+              <span class="product-card__qty-value" id="qty-value-2">1</span>
+              <button class="product-card__qty-btn" data-action="plus" data-product="2">+</button>
+            </div>
+          </div>
+          <button class="btn btn--primary product-card__add-btn" data-product="2">🛒 Add to Cart — ₹1,200</button>
+          <button class="btn btn--secondary product-card__buy-btn" data-product="2">⚡ Buy It Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bundle Offer -->
+    <div class="bundle-offer reveal">
+      <div class="bundle-offer__inner">
+        <div class="bundle-offer__badge">🎁 Combo Deal</div>
+        <h3 class="bundle-offer__title">Get Both & Save Extra ₹300!</h3>
+        <p class="bundle-offer__text">Cool Neck + Mini Air Cooler = Complete Summer Solution</p>
+        <div class="bundle-offer__prices">
+          <span class="bundle-offer__original">₹1,849</span>
+          <span class="bundle-offer__price">₹1,549</span>
+        </div>
+        <button class="btn btn--primary bundle-offer__btn" data-bundle="both">🛒 Add Bundle to Cart — ₹1,549</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FEATURES ========== -->
-<section class="features section-padding" id="features">
-  <div class="container text-center">
-    <span class="section-label reveal">Why Cool Neck?</span>
-    <h2 class="section-title reveal reveal-delay-1">Engineered for Comfort</h2>
-    <p class="section-subtitle reveal reveal-delay-2">Premium features packed into a feather-light 280g design.</p>
-    <div class="features__grid">
-      <div class="feature-card reveal"><div class="feature-card__icon">🌀</div><h3 class="feature-card__title">Bladeless Design</h3><p class="feature-card__desc">No exposed blades — safe with your hair, scarves, and jewelry. Comfortable all day.</p></div>
-      <div class="feature-card reveal reveal-delay-1"><div class="feature-card__icon">🔋</div><h3 class="feature-card__title">8-Hour Battery</h3><p class="feature-card__desc">4000mAh rechargeable battery keeps you cool from morning to night on a single charge.</p></div>
-      <div class="feature-card reveal reveal-delay-2"><div class="feature-card__icon">🎚️</div><h3 class="feature-card__title">3 Speed Modes</h3><p class="feature-card__desc">Low, medium, and turbo — easily switch with a single button press.</p></div>
-      <div class="feature-card reveal reveal-delay-3"><div class="feature-card__icon">🤫</div><h3 class="feature-card__title">Whisper Quiet</h3><p class="feature-card__desc">Less than 25dB on low — quieter than a library. Use it in meetings and classrooms.</p></div>
-      <div class="feature-card reveal reveal-delay-4"><div class="feature-card__icon">💧</div><h3 class="feature-card__title">IPX4 Splash-Proof</h3><p class="feature-card__desc">Sweat-proof and splash-resistant. Perfect for intense gym sessions.</p></div>
-      <div class="feature-card reveal reveal-delay-5"><div class="feature-card__icon">🪶</div><h3 class="feature-card__title">Ultra-Lightweight</h3><p class="feature-card__desc">Only 280g — so light you'll forget it's there. Adjustable flex-fit for any neck.</p></div>
+<!-- Features Comparison -->
+<section class="features-section section-padding" id="features">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-label reveal">Why Choose Us?</span>
+      <h2 class="section-title reveal reveal-delay-1">Premium Quality Guaranteed</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-card__icon">🌀</div>
+        <h3 class="feature-card__title">Bladeless Safe</h3>
+        <p class="feature-card__desc">No exposed blades — safe for everyone, including kids</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-card__icon">🔋</div>
+        <h3 class="feature-card__title">Long Battery</h3>
+        <p class="feature-card__desc">8+ hours of continuous cooling on single charge</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-card__icon">🤫</div>
+        <h3 class="feature-card__title">Silent Operation</h3>
+        <p class="feature-card__desc">Less than 25dB — quieter than a whisper</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-card__icon">🪶</div>
+        <h3 class="feature-card__title">Ultra Light</h3>
+        <p class="feature-card__desc">Only 280g — you'll forget you're wearing it</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-card__icon">💧</div>
+        <h3 class="feature-card__title">Water Resistant</h3>
+        <p class="feature-card__desc">IPX4 rating — sweat & splash proof</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="feature-card__icon">📱</div>
+        <h3 class="feature-card__title">USB Charging</h3>
+        <p class="feature-card__desc">Convenient USB-C charging anywhere</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ========== LIFESTYLE ========== -->
-<section class="lifestyle section-padding" id="lifestyle">
-  <div class="container text-center">
-    <span class="section-label reveal">Cool Everywhere</span>
-    <h2 class="section-title reveal reveal-delay-1">Real People. Real Cool.</h2>
-    <p class="section-subtitle reveal reveal-delay-2">From the gym to the classroom — Cool Neck keeps up with your life.</p>
-    <div class="lifestyle__grid">
-      <div class="lifestyle__item reveal"><img src="assets/A_stylish_Gen_202604141323.png" alt="Woman relaxing at home with Cool Neck" loading="lazy"><div class="lifestyle__item-overlay"><span class="lifestyle__item-caption">At Home</span><span class="lifestyle__item-subcaption">Relax in comfort</span></div></div>
-      <div class="lifestyle__item reveal reveal-delay-1"><img src="assets/Prompt__A_realistic_202604171342.png" alt="Woman at gym with Cool Neck" loading="lazy"><div class="lifestyle__item-overlay"><span class="lifestyle__item-caption">At the Gym</span><span class="lifestyle__item-subcaption">Power through your workout</span></div></div>
-      <div class="lifestyle__item reveal reveal-delay-2"><img src="assets/Prompt__A_POV_202604171342.png" alt="Student studying with Cool Neck" loading="lazy"><div class="lifestyle__item-overlay"><span class="lifestyle__item-caption">While Studying</span><span class="lifestyle__item-subcaption">Focus without the heat</span></div></div>
-      <div class="lifestyle__item reveal reveal-delay-3"><img src="assets/An_Indian_girl_202604141326.png" alt="Girl selfie with Cool Neck" loading="lazy"><div class="lifestyle__item-overlay"><span class="lifestyle__item-caption">Everyday Style</span><span class="lifestyle__item-subcaption">Cool is the new accessory</span></div></div>
-      <div class="lifestyle__item reveal reveal-delay-4"><img src="assets/Prompt__A_hyper-realistic_202604171344.png" alt="Cool Neck neon product shot" loading="lazy"><div class="lifestyle__item-overlay"><span class="lifestyle__item-caption">Future-Ready</span><span class="lifestyle__item-subcaption">Tech meets comfort</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== HOW IT WORKS ========== -->
-<section class="how-it-works section-padding" id="how-it-works">
-  <div class="container text-center">
-    <span class="section-label reveal">Simple as 1-2-3</span>
-    <h2 class="section-title reveal reveal-delay-1">How It Works</h2>
-    <p class="section-subtitle reveal reveal-delay-2">From unboxing to instant relief in under 10 seconds.</p>
-    <div class="how-it-works__steps">
-      <div class="how-it-works__step reveal"><div class="how-it-works__step-number">1</div><h3 class="how-it-works__step-title">Charge It</h3><p class="how-it-works__step-desc">Plug in USB-C and fully charge in just 3 hours. LED turns green when ready.</p></div>
-      <div class="how-it-works__step reveal reveal-delay-2"><div class="how-it-works__step-number">2</div><h3 class="how-it-works__step-title">Wear It</h3><p class="how-it-works__step-desc">Slip it around your neck — flexible silicone band adjusts to any size comfortably.</p></div>
-      <div class="how-it-works__step reveal reveal-delay-4"><div class="how-it-works__step-number">3</div><h3 class="how-it-works__step-title">Stay Cool</h3><p class="how-it-works__step-desc">Press power to activate 360° airflow. Choose from 3 speeds and enjoy hours of cooling.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== REVIEWS ========== -->
+<!-- Reviews -->
 <section class="reviews section-padding" id="reviews">
   <div class="container text-center">
     <span class="section-label reveal">Customer Love</span>
     <h2 class="section-title reveal reveal-delay-1">What People Are Saying</h2>
-    <p class="section-subtitle reveal reveal-delay-2">Join 10,000+ happy customers staying cool this summer.</p>
-    <div class="reviews__grid">
-      <div class="review-card reveal"><div class="review-card__stars">★★★★★</div><p class="review-card__text">"I use it every day at the gym. So lightweight I forget I'm wearing it. Battery easily lasts my entire workout and commute!"</p><div class="review-card__author"><div class="review-card__avatar">PR</div><div><div class="review-card__author-name">Priya R.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
-      <div class="review-card reveal reveal-delay-1"><div class="review-card__stars">★★★★★</div><p class="review-card__text">"Bought this for my mom who works in the kitchen. She absolutely loves it — says she can't cook without it anymore!"</p><div class="review-card__author"><div class="review-card__avatar">AK</div><div><div class="review-card__author-name">Arjun K.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
-      <div class="review-card reveal reveal-delay-2"><div class="review-card__stars">★★★★★</div><p class="review-card__text">"Medical student here — my hostel gets unbearably hot. This saved my study sessions. Silent mode is a game-changer!"</p><div class="review-card__author"><div class="review-card__avatar">SM</div><div><div class="review-card__author-name">Sneha M.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
-      <div class="review-card reveal reveal-delay-3"><div class="review-card__stars">★★★★☆</div><p class="review-card__text">"Great build quality and the pink color is gorgeous. Only wish it came in more colors. Already ordered one for my sister!"</p><div class="review-card__author"><div class="review-card__avatar">DV</div><div><div class="review-card__author-name">Divya V.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
-      <div class="review-card reveal reveal-delay-4"><div class="review-card__stars">★★★★★</div><p class="review-card__text">"I ride my bike to office daily and this is a lifesaver in Mumbai heat. USB-C charging is super convenient."</p><div class="review-card__author"><div class="review-card__avatar">RJ</div><div><div class="review-card__author-name">Rahul J.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
-      <div class="review-card reveal reveal-delay-5"><div class="review-card__stars">★★★★★</div><p class="review-card__text">"Wore it to a cricket match in 42°C — absolute game changer! Got so many questions, sent everyone to Cool Neck 😂"</p><div class="review-card__author"><div class="review-card__avatar">NK</div><div><div class="review-card__author-name">Nikhil K.</div><div class="review-card__author-badge">✓ Verified Buyer</div></div></div></div>
+    <p class="section-subtitle reveal reveal-delay-2">Join 10,000+ happy customers</p>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Best purchase this summer! Using it at gym daily. Battery lasts entire workout!"</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">PR</div>
+          <div>
+            <div class="review-card__author-name">Priya R.</div>
+            <div class="review-card__author-badge">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-1">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Cool Neck is amazing! Got one for mom too. She uses it while cooking."</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">AK</div>
+          <div>
+            <div class="review-card__author-name">Arjun K.</div>
+            <div class="review-card__author-badge">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Mini cooler is perfect for my office desk. Silent and effective!"</p>
+        <div class="review-card__author">
+          <div class="review-card__avatar">SM</div>
+          <div>
+            <div class="review-card__author-name">Sneha M.</div>
+            <div class="review-card__author-badge">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FAQ ========== -->
+<!-- FAQ -->
 <section class="faq section-padding" id="faq">
   <div class="container text-center">
     <span class="section-label reveal">Got Questions?</span>
     <h2 class="section-title reveal reveal-delay-1">Frequently Asked Questions</h2>
-    <div class="faq__list">
-      <div class="faq__item reveal"><button class="faq__question">How long does the battery last?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">On low mode up to 8 hours, medium ~5 hours, turbo ~3 hours. Full charge via USB-C takes about 3 hours.</div></div></div>
-      <div class="faq__item reveal reveal-delay-1"><button class="faq__question">Is it safe with long hair?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">Absolutely! Bladeless air intake design — no exposed fan blades. Completely safe with any hair length or style.</div></div></div>
-      <div class="faq__item reveal reveal-delay-2"><button class="faq__question">Will it fit my neck?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">Flexible silicone band fits neck circumferences from 28cm to 45cm. Only 280g — comfortable for extended use.</div></div></div>
-      <div class="faq__item reveal reveal-delay-3"><button class="faq__question">Can I use it while exercising?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">Yes! IPX4 splash-proof rating handles sweat and light water splashes. Perfect for gym, jogging, cycling.</div></div></div>
-      <div class="faq__item reveal reveal-delay-4"><button class="faq__question">What's the return policy?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">7-day hassle-free returns. Contact support within 7 days for a full refund or exchange. Product must be in original condition.</div></div></div>
-      <div class="faq__item reveal reveal-delay-5"><button class="faq__question">How noisy is it?<span class="faq__icon">+</span></button><div class="faq__answer"><div class="faq__answer-content">Low mode: less than 25dB (quieter than a whisper). Medium: ~30dB. Turbo: ~40dB (light background music level).</div></div></div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question">How long does battery last?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-content">Up to 8 hours on low mode, 5 hours on medium, and 3 hours on turbo speed.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-question">Is it safe with long hair?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-content">Yes! Bladeless design is completely safe for any hair length or style.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question">What's the return policy?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-content">7-day hassle-free returns. Contact support within 7 days for full refund.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-question">How noisy is the cooler?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-content">Less than 25dB on low mode — quieter than a library whisper.</div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ========== CTA BANNER ========== -->
+<!-- CTA Banner -->
 <section class="cta-banner section-padding">
   <div class="container">
     <div class="cta-banner__inner reveal">
       <h2 class="cta-banner__title">Ready to Beat the Heat?</h2>
-      <p class="cta-banner__subtitle">Order your Cool Neck today. Free shipping across India. Use code <strong style="color:var(--clr-primary)">COOL20</strong> for extra savings.</p>
-      <a href="#product" class="btn btn--primary btn--large">🛒 Shop Now — ₹849</a>
+      <p class="cta-banner__subtitle">Order now! Free shipping across India. Use code <strong style="color:var(--clr-primary)">FIRST25</strong> for extra 25% off.</p>
+      <a href="#products" class="btn btn--primary btn--large">🛒 Shop Now</a>
     </div>
   </div>
 </section>
 
-<!-- ========== FOOTER ========== -->
+<!-- Footer -->
 <footer class="footer" id="footer">
   <div class="container">
-    <div class="footer__grid">
+    <div class="footer-grid">
       <div>
-        <div class="footer__brand-name">❄ Cool Neck</div>
-        <p class="footer__brand-desc">Stay cool anywhere with India's favourite wearable neck fan. Bladeless, lightweight, engineered for your comfort.</p>
-        <div class="footer__social">
-          <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
-          <a href="#" class="footer__social-link" aria-label="Facebook">📘</a>
-          <a href="#" class="footer__social-link" aria-label="Twitter">🐦</a>
+        <div class="footer-brand-name">❄ Cool Neck</div>
+        <p class="footer-brand-desc">Premium cooling solutions for modern living. Stay comfortable, stay cool.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="footer-social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="footer-social-link" aria-label="Twitter">🐦</a>
         </div>
       </div>
-      <div><div class="footer__col-title">Shop</div><ul class="footer__links"><li><a href="#product" class="footer__link">Cool Neck Fan</a></li><li><a href="#features" class="footer__link">Features</a></li><li><a href="#reviews" class="footer__link">Reviews</a></li></ul></div>
-      <div><div class="footer__col-title">Support</div><ul class="footer__links"><li><a href="#faq" class="footer__link">FAQ</a></li><li><a href="#" class="footer__link">Contact Us</a></li><li><a href="#" class="footer__link">Shipping Info</a></li><li><a href="#" class="footer__link">Returns</a></li></ul></div>
-      <div><div class="footer__col-title">Legal</div><ul class="footer__links"><li><a href="#" class="footer__link">Privacy Policy</a></li><li><a href="#" class="footer__link">Terms of Service</a></li><li><a href="#" class="footer__link">Refund Policy</a></li></ul></div>
+      <div><div class="footer-col-title">Shop</div><ul class="footer-links"><li><a href="#cool-neck" class="footer-link">Cool Neck</a></li><li><a href="#air-cooler" class="footer-link">Air Cooler</a></li><li><a href="#bundle" class="footer-link">Bundle Offers</a></li></ul></div>
+      <div><div class="footer-col-title">Support</div><ul class="footer-links"><li><a href="#faq" class="footer-link">FAQ</a></li><li><a href="#" class="footer-link">Contact Us</a></li><li><a href="#" class="footer-link">Shipping</a></li><li><a href="#" class="footer-link">Returns</a></li></ul></div>
+      <div><div class="footer-col-title">Legal</div><ul class="footer-links"><li><a href="#" class="footer-link">Privacy Policy</a></li><li><a href="#" class="footer-link">Terms</a></li><li><a href="#" class="footer-link">Refund Policy</a></li></ul></div>
     </div>
-    <div class="footer__bottom">
+    <div class="footer-bottom">
       <span>&copy; 2026 Cool Neck. All rights reserved.</span>
       <span>Made with ❤️ in India</span>
     </div>
   </div>
 </footer>
 
-<!-- ========== CART DRAWER ========== -->
+<!-- Cart Drawer -->
 <div class="cart-overlay" id="cart-overlay"></div>
 <div class="cart-drawer" id="cart-drawer">
   <div class="cart-drawer__header">
@@ -315,7 +461,7 @@
   </div>
 </div>
 
-<!-- ========== CHECKOUT MODAL ========== -->
+<!-- Checkout Modal -->
 <div class="modal-overlay" id="checkout-overlay">
   <div class="modal">
     <div class="modal__header">
@@ -323,17 +469,15 @@
       <button class="modal__close" id="checkout-close">✕</button>
     </div>
     <div class="modal__body">
-
-      <!-- Step 1: Customer Info -->
       <div class="modal__step active" id="checkout-step-1">
         <div id="order-summary" class="order-summary"></div>
-        <div class="form-group" style="padding-top: 10px; border-top: 1px solid var(--clr-border, #eaeaea);">
+        <div class="form-group" style="padding-top:10px;border-top:1px solid var(--clr-border,#eaeaea)">
           <label class="form-label" for="coupon-input">Coupon Code</label>
-          <div style="display: flex; gap: 8px;">
+          <div style="display:flex;gap:8px">
             <input class="form-input" type="text" id="coupon-input" placeholder="">
-            <button class="btn btn--secondary" id="apply-coupon-btn" style="padding: 0 16px;">Apply</button>
+            <button class="btn btn--secondary" id="apply-coupon-btn" style="padding:0 16px">Apply</button>
           </div>
-          <div id="coupon-message" style="margin-top: 5px; font-size: 13px; font-weight: 500;"></div>
+          <div id="coupon-message" style="margin-top:5px;font-size:13px;font-weight:500"></div>
         </div>
         <div class="form-group">
           <label class="form-label" for="customer-name">Full Name *</label>
@@ -366,10 +510,8 @@
         <button class="btn btn--primary btn--full" id="checkout-next">Continue to Payment →</button>
       </div>
 
-      <!-- Step 2: Payment -->
       <div class="modal__step" id="checkout-step-2">
         <div id="order-summary-2" class="order-summary"></div>
-
         <label class="form-label" style="margin-bottom:12px">Select Payment Method</label>
         <div class="payment-methods">
           <div class="payment-card" data-method="upi">
@@ -383,32 +525,22 @@
             <div class="payment-card__desc">Pay when you receive</div>
           </div>
         </div>
-
-        <!-- UPI Section -->
         <div class="upi-section" style="display:none">
-          <div class="upi-section__qr">
-            <img src="assets/cool-neck-upi-qr.png" alt="UPI QR Code for payment">
-          </div>
+          <div class="upi-section__qr"><img src="assets/cool-neck-upi-qr.png" alt="UPI QR"></div>
           <div class="upi-section__id">Scan QR or pay to UPI ID</div>
-          <div class="upi-section__amount">Amount: <strong id="upi-amount">₹849</strong></div>
-          <div class="upi-section__instruction">
-            📌 After paying, click "Place Order" below. We'll verify payment and ship within 24 hours.
-          </div>
+          <div class="upi-section__amount">Amount: <strong id="upi-amount">₹0</strong></div>
+          <div class="upi-section__instruction">📌 After paying, click "Place Order" below.</div>
         </div>
-
-        <!-- COD Section -->
         <div class="cod-section" style="display:none">
           <div class="cod-section__icon">📦</div>
-          <div class="cod-section__text">Pay <strong id="cod-amount">₹849</strong> in cash when your order arrives.</div>
+          <div class="cod-section__text">Pay <strong id="cod-amount">₹0</strong> in cash when your order arrives.</div>
         </div>
-
         <div style="display:flex;gap:12px;margin-top:24px">
           <button class="btn btn--secondary" id="checkout-back" style="flex:1">← Back</button>
           <button class="btn btn--primary" id="place-order-btn" style="flex:2">✅ Place Order</button>
         </div>
       </div>
 
-      <!-- Step 3: Success -->
       <div class="modal__step" id="checkout-step-3">
         <div class="success-state">
           <div class="success-state__icon">✓</div>
@@ -418,7 +550,6 @@
           <button class="btn btn--primary" id="success-close-btn" style="margin-top:24px">Continue Shopping</button>
         </div>
       </div>
-
     </div>
   </div>
 </div>
@@ -426,6 +557,36 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script src="script.js?v=2.0.0"></script>
+<!-- Purchase Notification Popup -->
+<div class="purchase-popup" id="purchase-popup">
+  <div class="purchase-popup__icon">👤</div>
+  <div class="purchase-popup__content">
+    <div class="purchase-popup__text" id="purchase-popup-text"></div>
+    <div class="purchase-popup__time">just now</div>
+  </div>
+  <button class="purchase-popup__close" id="purchase-popup-close">✕</button>
+</div>
+
+<!-- Trust Badges Bar -->
+<div class="trust-badges">
+  <div class="trust-badges__inner">
+    <div class="trust-badge"><span class="trust-badge__icon">🛡️</span><div class="trust-badge__text"><strong>Secure Payment</strong><span>100% Protected</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">↩️</span><div class="trust-badge__text"><strong>7-Day Returns</strong><span>Hassle Free</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">🎯</span><div class="trust-badge__text"><strong>1-Year Warranty</strong><span>Official Coverage</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">🚚</span><div class="trust-badge__text"><strong>Free Shipping</strong><span>On ₹499+</span></div></div>
+    <div class="trust-badge"><span class="trust-badge__icon">💬</span><div class="trust-badge__text"><strong>WhatsApp Support</strong><span>Quick Help</span></div></div>
+  </div>
+</div>
+
+<!-- Live Visitors & Stock Urgency -->
+<div class="urgency-bar">
+  <div class="urgency-bar__inner">
+    <div class="urgency-bar__visitors"><span class="urgency-bar__dot"></span><span id="live-visitors">27</span> people viewing this page</div>
+    <div class="urgency-bar__stock"><span class="urgency-bar__stock-icon">🔥</span>Only <strong id="stock-left">3</strong> left in stock!</div>
+    <div class="urgency-bar__delivery">Free delivery by <strong id="delivery-date"></strong></div>
+  </div>
+</div>
+
+<script src="script.js?v=3.0.0"></script>
 </body>
 </html>
