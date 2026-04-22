@@ -9,6 +9,7 @@
   const SUPABASE_URL = 'https://rubbrgrzvanrigatpmto.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1YmJyZ3J6dmFucmlnYXRwbXRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NzUwMjAsImV4cCI6MjA4NTQ1MTAyMH0.yUs7UPqmnMY5m8XIXp8Kmvj8IawbfNyDH3TLI8JVENI';
   const EDGE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/process-order';
+  const ANALYTICS_TABLE = 'analytics';
 
   /* ========== PRODUCTS DATA ========== */
   const PRODUCTS = {
@@ -77,6 +78,57 @@
       script.onerror = () => { console.warn('⚠️ Supabase CDN failed'); resolve(); };
       document.head.appendChild(script);
     });
+  }
+
+  /* ========== ANALYTICS TRACKING ========== */
+  async function trackEvent(eventType, data = {}) {
+    if (!supabase) return;
+    try {
+      const eventData = {
+        event_type: eventType,
+        product_id: data.productId || null,
+        product_name: data.productName || null,
+        quantity: data.quantity || 1,
+        amount: data.amount || 0,
+        page_url: window.location.href,
+        referrer: document.referrer || 'direct',
+        user_agent: navigator.userAgent.substring(0, 200),
+        session_id: sessionStorage.getItem('session_id') || generateSessionId()
+      };
+      await supabase.from(ANALYTICS_TABLE).insert(eventData);
+    } catch (e) { console.warn('Analytics error:', e); }
+  }
+
+  function generateSessionId() {
+    const id = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('session_id', id);
+    return id;
+  }
+
+  function initAnalytics() {
+    trackEvent('page_view', { page: 'home' });
+    
+    document.querySelectorAll('.product-card__add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pid = btn.dataset.product;
+        const product = PRODUCTS[pid];
+        trackEvent('add_to_cart', { productId: pid, productName: product.name, quantity: quantities[pid], amount: product.price * quantities[pid] });
+      });
+    });
+
+    const checkoutBtn = document.getElementById('cart-checkout-btn');
+    if (checkoutBtn) {
+      const originalClick = checkoutBtn.onclick;
+      checkoutBtn.addEventListener('click', () => {
+        trackEvent('checkout_start', { amount: getCartTotal(), items: getCartTotalQty() });
+      });
+    }
+  }
+
+  function generateSessionId() {
+    const id = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('session_id', id);
+    return id;
   }
 
   /* ========== HEADER ========== */

@@ -33,7 +33,7 @@
     .admin-header__back:hover { background: rgba(255,255,255,.2); }
     
     /* Stats Cards */
-    .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 30px 40px; }
+    .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 30px 40px; }
     .stat-card { background: var(--clr-white); border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
     .stat-card__label { font-size: 13px; color: var(--clr-gray-500); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
     .stat-card__value { font-family: var(--ff-heading); font-size: 32px; font-weight: 800; color: var(--clr-dark); }
@@ -100,24 +100,69 @@
 <!-- Stats Cards -->
 <div class="admin-stats">
   <div class="stat-card">
-    <div class="stat-card__label">Total Orders</div>
+    <div class="stat-card__label">👁️ Page Views</div>
+    <div class="stat-card__value" id="page-views">--</div>
+    <div class="stat-card__change stat-card__change--up">Total visitors</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">🛒 Add to Cart</div>
+    <div class="stat-card__value" id="cart-clicks">--</div>
+    <div class="stat-card__change">Product interactions</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">📝 Checkout Attempts</div>
+    <div class="stat-card__value" id="checkout-attempts">--</div>
+    <div class="stat-card__change">Started checkout</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">✅ Completed Orders</div>
     <div class="stat-card__value" id="total-orders">--</div>
-    <div class="stat-card__change stat-card__change--up">↑ 12% from last week</div>
+    <div class="stat-card__change stat-card__change--up">Successful</div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__label">Total Revenue</div>
+    <div class="stat-card__label">💰 Total Revenue</div>
     <div class="stat-card__value" id="total-revenue">₹--</div>
-    <div class="stat-card__change stat-card__change--up">↑ 8% from last week</div>
+    <div class="stat-card__change stat-card__change--up">From completed</div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__label">Pending Orders</div>
+    <div class="stat-card__label">⏳ Pending Orders</div>
     <div class="stat-card__value" id="pending-orders">--</div>
     <div class="stat-card__change">Awaiting confirmation</div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__label">COD Orders</div>
+    <div class="stat-card__label">💵 COD Orders</div>
     <div class="stat-card__value" id="cod-orders">--</div>
     <div class="stat-card__change">Cash on Delivery</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__label">📱 UPI Orders</div>
+    <div class="stat-card__value" id="upi-orders">--</div>
+    <div class="stat-card__change">Online Payment</div>
+  </div>
+</div>
+
+<!-- Analytics Section -->
+<div style="padding: 0 40px 20px;">
+  <div class="orders-card" style="padding: 20px;">
+    <h3 style="font-family: var(--ff-heading); margin-bottom: 16px;">📊 Analytics Summary</h3>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+      <div style="background: #f0fdf4; padding: 16px; border-radius: 12px; text-align: center;">
+        <div style="font-size: 24px; font-weight: 800; color: #16a34a;" id="conversion-rate">--%</div>
+        <div style="font-size: 12px; color: #6b7280;">Conversion Rate</div>
+      </div>
+      <div style="background: #fef3c7; padding: 16px; border-radius: 12px; text-align: center;">
+        <div style="font-size: 24px; font-weight: 800; color: #d97706;" id="abandon-rate">--%</div>
+        <div style="font-size: 12px; color: #6b7280;">Cart Abandonment</div>
+      </div>
+      <div style="background: #dbeafe; padding: 16px; border-radius: 12px; text-align: center;">
+        <div style="font-size: 24px; font-weight: 800; color: #2563eb;" id="avg-order-value">₹--</div>
+        <div style="font-size: 12px; color: #6b7280;">Avg Order Value</div>
+      </div>
+      <div style="background: #fce7f3; padding: 16px; border-radius: 12px; text-align: center;">
+        <div style="font-size: 24px; font-weight: 800; color: #db2777;" id="cod-percentage">--%</div>
+        <div style="font-size: 12px; color: #6b7280;">COD Preference</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -175,28 +220,57 @@
     tbody.innerHTML = '<tr><td colspan="9" class="loading">Loading orders...</td></tr>';
     
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/orders?select=*&order=created_at.desc`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-        }
-      });
+      const [ordersRes, analyticsRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/orders?select=*&order=created_at.desc`, {
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        }),
+        fetch(`${SUPABASE_URL}/rest/v1/analytics?select=*&order=created_at.desc`, {
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+        }).catch(() => ({ json: () => [] }))
+      ]);
       
-      allOrders = await response.json();
+      allOrders = await ordersRes.json();
+      const analytics = await analyticsRes.json();
       
       if (!allOrders || allOrders.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><div class="empty-state__icon">📦</div>No orders yet</td></tr>';
         updateStats(0);
+        updateAnalytics(analytics || []);
         return;
       }
       
       renderOrders(allOrders);
       updateStats(allOrders.length);
+      updateAnalytics(analytics || []);
       
     } catch (error) {
       console.error('Error loading orders:', error);
       tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><div class="empty-state__icon">⚠️</div>Error loading orders. Make sure Supabase is configured.</td></tr>';
     }
+  }
+
+  function updateAnalytics(analytics) {
+    const pageViews = analytics.filter(a => a.event_type === 'page_view').length;
+    const cartClicks = analytics.filter(a => a.event_type === 'add_to_cart').length;
+    const checkoutStarts = analytics.filter(a => a.event_type === 'checkout_start').length;
+    const totalRevenue = allOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+    const pending = allOrders.filter(o => !o.status || o.status === 'pending').length;
+    const cod = allOrders.filter(o => o.payment_method === 'cod').length;
+    const upi = allOrders.filter(o => o.payment_method === 'upi').length;
+    
+    document.getElementById('page-views').textContent = pageViews || '0';
+    document.getElementById('cart-clicks').textContent = cartClicks || '0';
+    document.getElementById('checkout-attempts').textContent = checkoutStarts || '0';
+    
+    const conversionRate = pageViews > 0 ? ((allOrders.length / pageViews) * 100).toFixed(1) : 0;
+    const abandonRate = cartClicks > 0 ? (((cartClicks - allOrders.length) / cartClicks) * 100).toFixed(1) : 0;
+    const avgOrderValue = allOrders.length > 0 ? Math.round(totalRevenue / allOrders.length) : 0;
+    const codPercent = allOrders.length > 0 ? ((cod / allOrders.length) * 100).toFixed(0) : 0;
+    
+    document.getElementById('conversion-rate').textContent = conversionRate + '%';
+    document.getElementById('abandon-rate').textContent = abandonRate + '%';
+    document.getElementById('avg-order-value').textContent = '₹' + avgOrderValue;
+    document.getElementById('cod-percentage').textContent = codPercent + '%';
   }
 
   function renderOrders(orders) {
@@ -248,11 +322,13 @@
     const totalRevenue = allOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
     const pending = allOrders.filter(o => !o.status || o.status === 'pending').length;
     const cod = allOrders.filter(o => o.payment_method === 'cod').length;
+    const upi = allOrders.filter(o => o.payment_method === 'upi').length;
     
     document.getElementById('total-orders').textContent = count;
     document.getElementById('total-revenue').textContent = '₹' + totalRevenue.toLocaleString();
     document.getElementById('pending-orders').textContent = pending;
     document.getElementById('cod-orders').textContent = cod;
+    document.getElementById('upi-orders').textContent = upi;
   }
 
   function viewOrder(orderId) {
