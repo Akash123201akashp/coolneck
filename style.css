@@ -110,8 +110,6 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--ff-heading); line-height: 1.15; letter-sp
 .header__cart-btn:hover { background: rgba(249,168,201,.15) }
 .header__cart-count { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: var(--clr-accent); color: var(--clr-white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all var(--transition-spring) }
 .header__cart-count.has-items { opacity: 1; transform: scale(1) }
-.header__admin-link { font-size: 20px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-full); transition: all var(--transition-fast) }
-.header__admin-link:hover { background: rgba(249,168,201,.15); transform: rotate(30deg) }
 .header__menu-toggle { display: none; width: 44px; height: 44px; flex-direction: column; align-items: center; justify-content: center; gap: 5px }
 .header__menu-toggle span { width: 22px; height: 2px; background: var(--clr-dark); border-radius: 2px; transition: all var(--transition-base) }
 .header__menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px) }
@@ -470,7 +468,7 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--ff-heading); line-height: 1.15; letter-sp
   .features-grid { grid-template-columns: repeat(2, 1fr) }
   .reviews-grid { grid-template-columns: repeat(2, 1fr) }
   .footer-grid { grid-template-columns: repeat(2, 1fr) }
-  .header__admin-link { display: none; }
+  
 }
 
 @media (max-width: 768px) {
