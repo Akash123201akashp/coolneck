@@ -28,8 +28,8 @@
     2: {
       id: 2,
       name: 'Mini Air Cooler — Portable',
-      price: 1200,
-      comparePrice: 2499,
+      price: 899,
+      comparePrice: 1999,
       image: 'assets/product 2/Mini_air_cooler_202604202034.png',
       images: [
         'assets/product 2/Mini_air_cooler_202604202034.png',
@@ -42,7 +42,7 @@
   /* ========== BUNDLE ========== */
   const BUNDLE = {
     name: 'Cool Neck + Mini Air Cooler Bundle',
-    price: 1549,
+    price: 1299,
     comparePrice: 1849,
     image: 'assets/product 1/A_professional_product_202604171306.png'
   };
