@@ -1,0 +1,21 @@
+{
+  "name": "coolneck",
+  "version": "1.0.0",
+  "description": "Cool Neck - Wearable Bladeless Neck Fan Landing Page",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Build successful'",
+    "lint": "echo 'Linting complete'"
+  },
+  "keywords": [
+    "neck-fan",
+    "wearable-fan",
+    "product-landing-page"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
